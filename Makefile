@@ -44,7 +44,7 @@ endif
 CFLAGS ?= -O2 $(NOSSE4)   # disables potential auto-vectorization
 CFLAGS += -Wall -Wextra -Wcast-qual -Wcast-align -Wshadow \
           -Wstrict-aliasing=1 -Wswitch-enum -Wdeclaration-after-statement \
-          -Wstrict-prototypes -Wundef
+          -Wstrict-prototypes -Wundef -fPIC
 
 FLAGS   = $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(MOREFLAGS)
 XXHSUM_VERSION=$(LIBVER)
@@ -102,7 +102,9 @@ libxxhash.a: xxhash.o
 	@$(AR) $(ARFLAGS) $@ $^
 
 $(LIBXXH): LDFLAGS += -shared
+ifeq (,$(filter Windows%,$(OS)))
 $(LIBXXH): LDFLAGS += -fPIC
+endif
 $(LIBXXH): xxhash.c
 	@echo compiling dynamic library $(LIBVER)
 	@$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
