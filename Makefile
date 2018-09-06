@@ -102,9 +102,7 @@ libxxhash.a: xxhash.o
 	@$(AR) $(ARFLAGS) $@ $^
 
 $(LIBXXH): LDFLAGS += -shared
-ifeq (,$(filter Windows%,$(OS)))
 $(LIBXXH): LDFLAGS += -fPIC
-endif
 $(LIBXXH): xxhash.c
 	@echo compiling dynamic library $(LIBVER)
 	@$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
